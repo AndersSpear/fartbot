@@ -3,7 +3,8 @@ import re
 import aiosqlite
 from datetime import date
 from datetime import timedelta
-from token import TOKEN
+from authtoken import authTOKEN
+from discord import app_commands
 
 class MyClient(discord.Client):
     #db = None
@@ -11,6 +12,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         #db = await aiosqlite.connect("fartstreak.db")
         print(f'Logged on as {self.user}!')
+        #await tree.sync(guild=discord.Object(id=1047644766311043162))
 
     async def on_member_join(self, member):
         #print(f'{member} has joined the server')
@@ -27,11 +29,11 @@ class MyClient(discord.Client):
                         row = await cursor.fetchone()
                         today = date.today()
                         if(row == None):
-                            await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1);")
+                            await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.avatar.url}', '{message.author.name}');")
                             await db.commit()
                         else:
-                            print(f'row: {row}')
-                            print(f"streak end: {row[4]}\nyesterday date: {today - timedelta(days = 1)}")
+                            #print(f'row: {row}')
+                            #print(f"streak end: {row[4]}\nyesterday date: {today - timedelta(days = 1)}")
                             if(row[4] == str(today - timedelta(days = 1))):
                                 print('last message was yesterday')
                                 if (row[6] + 1 > row[5]):
@@ -53,7 +55,7 @@ class MyClient(discord.Client):
                                         userid = {message.author.id};""")
                                     await db.commit()
                                     #print("updated only the current streak")
-                            else:
+                            else: 
                                 if(row[4] != str(today)):
                                     await db.execute(f"""UPDATE fartstreak 
                                     SET currentstreak_end_date = '{today}',
@@ -62,7 +64,7 @@ class MyClient(discord.Client):
                                     WHERE
                                         userid = {message.author.id};""")
                                     await db.commit()
-                                    print("reset the current streak")
+                                    #print("reset the current streak")
     
                 #print('allowed')
 
@@ -72,4 +74,25 @@ intents.message_content = True
 intents.members = True
 
 client = MyClient(intents=intents)
-client.run(TOKEN)
+#tree = app_commands.CommandTree(client)
+
+# @tree.command(name = "update", description = "adds pfp links and names to db", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+# async def first_command(interaction):
+#     async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+#         async with db.execute('SELECT * FROM fartstreak') as cursor:
+#             rows = await cursor.fetchall()
+#             for row in rows:
+#                 guild = client.get_guild(1047644766311043162)
+#                 user = guild.get_member(row[0])
+#                 print(user)
+#                 await db.execute(f"""UPDATE fartstreak 
+#                                     SET pfp = '{user.avatar.url}',
+#                                         name = '{user.name}'
+#                                     WHERE
+#                                         userid = {row[0]};""")
+#                 await db.commit()
+
+
+#    await interaction.response.send_message("Done!")
+
+client.run(authTOKEN)

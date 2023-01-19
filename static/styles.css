@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
+html, body {
+  background: #3c302c;
+  color: whitesmoke;
+}
+body {
+  font-family: 'Nunito Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+  
+}
+#external {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+
+}
+#container {
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: start;
+}
+#container > div {
+  margin: 1rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  background: #6c605c;
+}
+/* hide id */
+#container > div:first-child {
+  display: none;
+}
+
+/* name */
+#container > div:last-child {
+  font-weight: bold;
+  background: transparent;
+  width: 10rem;
+}
+#container > div:nth-last-child(4) {
+  font-weight: bold;
+  background: #815546;
+  text-align:center;
+}
+/* pfp */
+#container > div:nth-last-child(2) {
+  border-radius: 10rem;
+  background-size: contain;
+  background-image: var(--link);
+  position: absolute;
+  left: -3rem;
+  width: 2rem;
+  height: 2rem;
+  top: -0.25rem;
+  
+  color: transparent;
+  user-select: none;
+}
+
+#container > div:nth-last-child(3), #container > div:nth-last-child(4) {
+  width: 2rem;
+}
+
+h1 { 
+  text-align:center;
+  color: #b2b16d;
+  font-family: serif;
+  font-weight: bold;
+  margin: 1rem;
+}

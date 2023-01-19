@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Fart Streaks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" type="image/x-icon" href="https://www.freepnglogos.com/uploads/poop-png/poop-emojis-archives-jason-graham-4.png">
+  </head>
+  <body>
+   
+    {% block content %}
+    <div id="external">
+   <h1>FART CLUB LEADERBOARD!</h1>
+
+    <div style="display: flex"><div style="width:14rem"></div><div style="width:3rem; margin-right:2rem; font-size: 0.8rem; font-family:monospace;color:#B19586">Current Streak Length</div><div style="width:3rem; margin-right:2rem; font-size: 0.8rem; font-family:monospace">Longest Streak Length</div><div style="width:106.38px; margin-right:2rem; font-size: 0.8rem; font-family:monospace;color:#B19586">Current Streak End Date</div><div style="width:106.38px; margin-right:2rem; font-size: 0.8rem; font-family:monospace;color:#B19586">Current Streak Start Date</div>
+        <div style="width:106.38px; margin-right:2rem; font-size: 0.8rem; font-family:monospace;color:#B19586">Longest Streak End Date</div><div style="width:106.38px; margin-right:2rem; font-size: 0.8rem; font-family:monospace;color:#B19586">Longest Streak Start Date</div>
+    </div>
+    
+    {%for i in Database%}
+    <div id="container">
+    {%for j in i%}
+
+    <div style="--link: url({{ j }});">{{j}}</div>
+    
+    {%endfor%}
+    </div>
+    {%endfor%}
+    </div>
+    {% endblock %}
+  </body>
+</html>

@@ -1,2 +1,3 @@
-token.py
+authtoken.py
 fartstreak.db
+__pycache__/
