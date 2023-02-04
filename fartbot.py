@@ -12,12 +12,17 @@ class MyClient(discord.Client):
     async def on_ready(self):
         #db = await aiosqlite.connect("fartstreak.db")
         print(f'Logged on as {self.user}!')
-        #await tree.sync(guild=discord.Object(id=1047644766311043162))
+        await tree.sync(guild=discord.Object(id=1047644766311043162))
 
     async def on_member_join(self, member):
         #print(f'{member} has joined the server')
         await member.edit(nick = 'fart club')
 
+    async def on_raw_message_edit(self, payload):
+        try:
+            await (await (await client.fetch_channel(1047644766311043162)).fetch_message(payload.message_id)).delete()
+        except:
+            pass
     async def on_message(self, message):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
@@ -75,23 +80,21 @@ intents.message_content = True
 intents.members = True
 
 client = MyClient(intents=intents)
-#tree = app_commands.CommandTree(client)
-#testinggit
-# @tree.command(name = "update", description = "adds pfp links and names to db", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-# async def first_command(interaction):
-#     async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
-#         async with db.execute('SELECT * FROM fartstreak') as cursor:
-#             rows = await cursor.fetchall()
-#             for row in rows:
-#                 guild = client.get_guild(1047644766311043162)
-#                 user = guild.get_member(row[0])
-#                 print(user)
-#                 await db.execute(f"""UPDATE fartstreak 
-#                                     SET pfp = '{user.avatar.url}',
-#                                         name = '{user.name}'
-#                                     WHERE
-#                                         userid = {row[0]};""")
-#                 await db.commit()
+tree = app_commands.CommandTree(client)
+@tree.command(name = "update", description = "adds pfp links and names to db", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+async def first_command(interaction):
+    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+        async with db.execute('SELECT * FROM fartstreak') as cursor:
+            rows = await cursor.fetchall()
+            for row in rows:
+                user = await client.fetch_user(row[0])
+                print(user)
+                await db.execute(f"""UPDATE fartstreak 
+                                    SET pfp = '{user.avatar.url}',
+                                        name = '{user.name}'
+                                    WHERE
+                                        userid = {row[0]};""")
+                await db.commit()
 
 
 #    await interaction.response.send_message("Done!")
