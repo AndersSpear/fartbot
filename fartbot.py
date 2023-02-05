@@ -101,7 +101,3 @@ async def update_db(interaction):
     await interaction.response.send_message(content = "Done!", ephemeral = True)
 
 client.run(authTOKEN)
-
-UPDATE fartstreak SET name = 'flean flingle'
-                     WHERE
-                         userid = 193475276779290624;
