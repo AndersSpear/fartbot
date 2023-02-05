@@ -19,14 +19,14 @@ class MyClient(discord.Client):
         await member.edit(nick = 'fart club')
 
     async def on_raw_message_edit(self, payload):
-        print("EDIT!!!")
+        #print("EDIT!!!")
         try:
             channel = await client.fetch_channel(1047644766877270038)
-            print(channel)
+            #print(channel)
             message = await channel.fetch_message(payload.message_id)
-            print(message)
+            #print(message)
             await message.delete()
-            print("success")
+            #print("success")
         except:
             pass
     async def on_message(self, message):
@@ -95,7 +95,7 @@ async def update_db(interaction):
             rows = await cursor.fetchall()
             for row in rows:
                 user = await client.fetch_user(row[0])
-                print(user)
+                #print(user)
                 await db.execute(f"""UPDATE fartstreak 
                                     SET pfp = '{user.display_avatar.url}',
                                         name = '{user.name}'
