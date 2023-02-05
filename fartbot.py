@@ -89,11 +89,8 @@ async def update_db(interaction):
             for row in rows:
                 user = await client.fetch_user(row[0])
                 print(user)
-                print(user.name)
-                print(user.avatar)
-                print(user.avatar.url)
                 await db.execute(f"""UPDATE fartstreak 
-                                    SET pfp = '{user.avatar.url}',
+                                    SET pfp = '{user.display_avatar.url}',
                                         name = '{user.name}'
                                     WHERE
                                         userid = {row[0]};""")
