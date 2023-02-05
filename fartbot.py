@@ -89,6 +89,9 @@ async def update_db(interaction):
             for row in rows:
                 user = await client.fetch_user(row[0])
                 print(user)
+                print(user.name)
+                print(user.avatar)
+                print(user.avatar.url)
                 await db.execute(f"""UPDATE fartstreak 
                                     SET pfp = '{user.avatar.url}',
                                         name = '{user.name}'
@@ -98,3 +101,7 @@ async def update_db(interaction):
     await interaction.response.send_message(content = "Done!", ephemeral = True)
 
 client.run(authTOKEN)
+
+UPDATE fartstreak SET name = 'flean flingle'
+                     WHERE
+                         userid = 193475276779290624;
