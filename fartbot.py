@@ -21,7 +21,7 @@ class MyClient(discord.Client):
     async def on_raw_message_edit(self, payload):
         print("EDIT!!!")
         try:
-            channel = await client.fetch_channel(1047644766311043162)
+            channel = await client.fetch_channel(1047644766877270038)
             print(channel)
             message = await channel.fetch_message(payload.message_id)
             print(message)
