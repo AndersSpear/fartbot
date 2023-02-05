@@ -19,8 +19,14 @@ class MyClient(discord.Client):
         await member.edit(nick = 'fart club')
 
     async def on_raw_message_edit(self, payload):
+        print("EDIT!!!")
         try:
-            await (await (await client.fetch_channel(1047644766311043162)).fetch_message(payload.message_id)).delete()
+            channel = await client.fetch_channel(1047644766311043162)
+            print(channel)
+            message = await channel.fetch_message(payload.message_id)
+            print(message)
+            await message.delete()
+            print("success")
         except:
             pass
     async def on_message(self, message):
