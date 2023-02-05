@@ -95,6 +95,6 @@ async def update_db(interaction):
                                     WHERE
                                         userid = {row[0]};""")
                 await db.commit()
-    await interaction.response.send_message(content = "Done!", ephemeral = True)
+    await interaction.response.pong()
 
 client.run(authTOKEN)
