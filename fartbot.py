@@ -133,15 +133,18 @@ async def total_update_db(interaction):
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
-                print(row[0])
-                print(a.keys())
-                print(a[row[0]])
-                await db.execute(f"""UPDATE fartstreak 
+                try:
+                    print(row[0])
+                    print(a.keys())
+                    print(a[row[0]])
+                    await db.execute(f"""UPDATE fartstreak 
                                     SET 
                                         total = {len(a[row[0]])}
                                     WHERE
                                         userid = {row[0]};""")
-                await db.commit()
+                    await db.commit()
+                except:
+                    print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
 
 client.run(authTOKEN)
