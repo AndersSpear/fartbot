@@ -7,6 +7,12 @@ rows = cur.execute('SELECT * FROM fartstreak').fetchall()
 
 for row in rows:
      print(row)
+     print(row[5])
+     today = date.today()
+     print(today)
+     print(row[4])
+     print(str(today - timedelta(days = 1)))
+     print(str(today - timedelta(days = 2)))
 
 
 

@@ -47,7 +47,7 @@ class MyClient(discord.Client):
                             #print(f'row: {row}')
                             #print(f"streak end: {row[4]}\nyesterday date: {today - timedelta(days = 1)}")
                             if(row[4] == str(today - timedelta(days = 1))):
-                                print('last message was yesterday')
+                                #print('last message was yesterday')
                                 if (row[6] + 1 > row[5]):
                                     await db.execute(f"""UPDATE fartstreak 
                                     SET longeststreak_start_date = '{row[3]}',
