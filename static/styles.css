@@ -13,7 +13,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  margin-right: -11rem;
+  margin-right: -16rem;
 }
 #container {
   position: relative;
@@ -84,5 +84,5 @@ h1 {
   font-weight: bold;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  margin-left: -30rem;
+  margin-left: -25rem;
 }
