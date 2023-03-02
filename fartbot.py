@@ -117,12 +117,13 @@ async def total_update_db(interaction):
 
     channel = await client.fetch_channel(1047644766877270038)
     a = {}
-    async for member in discord.Object(id=1047644766311043162).fetch_members():
-        a[member.id] = {}
     async for message in channel.history():
         dt = message.created_at
         date = (dt.year, dt.month, dt.day)
-        a[message.author.id].add(date)
+        try:
+            a[message.author.id].add(date)
+        except:
+            a[message.author.id] = {date}
     print(a)
     async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
         async with db.execute('SELECT * FROM fartstreak') as cursor:
