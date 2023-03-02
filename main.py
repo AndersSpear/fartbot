@@ -9,10 +9,15 @@ def main():
     res = cur.execute('SELECT * FROM fartstreak').fetchall()
     rend = sorted(res, key=lambda x: x[5])
     out = rend[::-1]
+    for entry in out:
+        entry.pop("currentstreak_start_date")
+        entry.pop("currentstreak_end_date")
+        entry.pop("longeststreak_start_date")
+        entry.pop("longeststreak_end_date")
     #print(type(out))
     #print(type(rend))
     #rend = res.sort(key = lambda x: x[5])
-    return render_template("main.html", Database = out, len = len(out))
+    return render_template("main.html", Database = out)
 
 if __name__ == '__main__':
     from waitress import serve
