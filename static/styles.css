@@ -37,7 +37,8 @@ body {
   font-weight: bold;
   background: transparent;
   position: absolute;
-  left: -13rem;
+  text-align: left !important;
+  left: -15rem;
   width: 13rem;
   top: 0;
 }
@@ -52,7 +53,7 @@ body {
   background-size: contain;
   background-image: var(--link);
   position: absolute;
-  left: -17rem;
+  left: -20rem;
   width: 2rem;
   height: 2rem;
   top: -0.25rem;
@@ -83,5 +84,5 @@ h1 {
   font-weight: bold;
   margin-top: 1rem;
   margin-bottom: 1rem;
-  margin-left: -10rem;
+  margin-left: -30rem;
 }
