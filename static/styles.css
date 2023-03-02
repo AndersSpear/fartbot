@@ -13,6 +13,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  margin-right: -10rem;
 }
 #container {
   position: relative;
