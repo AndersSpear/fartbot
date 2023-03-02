@@ -37,8 +37,8 @@ body {
   font-weight: bold;
   background: transparent;
   position: absolute;
-  left: -10rem;
-  width: 10rem;
+  left: -13rem;
+  width: 13rem;
   top: 0;
 }
 #container > div:nth-last-child(5) {
@@ -52,7 +52,7 @@ body {
   background-size: contain;
   background-image: var(--link);
   position: absolute;
-  left: -14rem;
+  left: -17rem;
   width: 2rem;
   height: 2rem;
   top: -0.25rem;
@@ -64,7 +64,8 @@ body {
 #container > div:nth-last-child(4),
 #container > div:nth-last-child(5),
 div:last-child {
-  width: 2rem;
+  width: 20rem !important;
+  text-align: center;
 }
 
 #container > div:nth-last-child(6),
