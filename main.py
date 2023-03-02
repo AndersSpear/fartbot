@@ -11,6 +11,7 @@ def main():
     out = rend[::-1]
     for entry in out:
         print(type(entry))
+        print(entry)
         entry.pop("currentstreak_start_date")
         entry.pop("currentstreak_end_date")
         entry.pop("longeststreak_start_date")
