@@ -41,7 +41,7 @@ class MyClient(discord.Client):
                         today = date.today()
                         if(row == None):
                             
-                            await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.display_avatar.url}', '{message.author.name}');")
+                            await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name, total) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.display_avatar.url}', '{message.author.name}', 1);")
                             await db.commit()
                         else:
                             #print(f'row: {row}')
@@ -54,7 +54,8 @@ class MyClient(discord.Client):
                                         longeststreak_end_date = '{today}',
                                         longeststreak_length = {row[6] + 1},
                                         currentstreak_end_date = '{today}',
-                                        currentstreak_length = {row[6] + 1}
+                                        currentstreak_length = {row[6] + 1},
+                                        total = {row[9] + 1}
                                     WHERE
                                         userid = {message.author.id};""")
                                     await db.commit()
@@ -62,7 +63,8 @@ class MyClient(discord.Client):
                                 else:
                                     await db.execute(f"""UPDATE fartstreak 
                                     SET currentstreak_end_date = '{today}',
-                                        currentstreak_length = {row[6] + 1}
+                                        currentstreak_length = {row[6] + 1},
+                                        total = {row[9] + 1}
                                     WHERE
                                         userid = {message.author.id};""")
                                     await db.commit()
@@ -72,7 +74,8 @@ class MyClient(discord.Client):
                                     await db.execute(f"""UPDATE fartstreak 
                                     SET currentstreak_end_date = '{today}',
                                         currentstreak_start_date = '{today}',
-                                        currentstreak_length = 1
+                                        currentstreak_length = 1,
+                                        total = {row[9] + 1}
                                     WHERE
                                         userid = {message.author.id};""")
                                     await db.commit()
@@ -87,6 +90,7 @@ intents.members = True
 
 client = MyClient(intents=intents)
 tree = app_commands.CommandTree(client)
+
 @tree.command(name = "update", description = "adds pfp links and names to db", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def update_db(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
