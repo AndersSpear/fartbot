@@ -117,11 +117,11 @@ async def total_update_db(interaction):
 
     channel = await client.fetch_channel(1047644766877270038)
     a = {}
+    async for member in guild.fetch_members():
+        a[member.id] = {}
     async for message in channel.history():
         dt = message.created_at
         date = (dt.year, dt.month, dt.day)
-        print(a[message.author.id])
-        a[message.author.id] = {}
         a[message.author.id].add(date)
     print(a)
     async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
