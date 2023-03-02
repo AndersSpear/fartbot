@@ -6,11 +6,12 @@ body {
 }
 body {
   font-family: "Nunito Sans", sans-serif;
-  display: flex;
-  justify-content: center;
+  /* justify-content: center; */
+  /* display: flex; */
 }
 #external {
   display: flex;
+  align-items: center;
   flex-direction: column;
   padding: 1rem;
 }
@@ -36,6 +37,7 @@ body {
   font-weight: bold;
   background: transparent;
   position: absolute;
+  padding-top: 0.5rem;
   left: -10rem;
   top: -0.25rem;
   width: 10rem;
@@ -74,6 +76,8 @@ div:last-child {
 }
 
 h1 {
+  margin-left: -10rem;
+  width: calc(100% + 10rem);
   text-align: center;
   color: #b2b16d;
   font-family: serif;
