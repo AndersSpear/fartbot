@@ -32,10 +32,10 @@ body {
 }
 
 /* name */
-#container > div:last-child(2) {
+#container > div:nth-last-child(2) {
   font-weight: bold;
-  background: transparent !important;
-  position: absolute !important;
+  background: transparent;
+  position: absolute;
   left: -10rem;
   top: -0.25rem;
   width: 10rem;
