@@ -2,7 +2,8 @@ import sqlite3
 from datetime import date
 from datetime import timedelta
 
-cur = sqlite3.connect("/home/pi/projects/fartbot/fartstreak.db").cursor()
+connection = sqlite3.connect("/home/pi/projects/fartbot/fartstreak.db")
+cur = connection.cursor()
 rows = cur.execute('SELECT * FROM fartstreak').fetchall()
 
 for row in rows:
@@ -19,4 +20,4 @@ for row in rows:
          SET currentstreak_length = 0
          WHERE
              userid = {row[0]};""")
-         cur.commit()
+         connection.commit()
