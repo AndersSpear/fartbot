@@ -103,7 +103,7 @@ async def update_db(interaction):
                 await db.execute(f"""UPDATE fartstreak 
                                     SET pfp = '{user.display_avatar.url}',
                                         name = '{user.name}',
-                                        total = {row[5]}
+                                        total = {max(row[9],row[5])}
                                     WHERE
                                         userid = {row[0]};""")
                 await db.commit()
