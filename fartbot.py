@@ -109,24 +109,26 @@ async def update_db(interaction):
                 await db.commit()
     await interaction.followup.send(content='done', ephemeral = True)
     
+
+
 @tree.command(name = "totalupdate", description = "gets total number of days participated and updates", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def total_update_db(interaction):
+    await interaction.response.defer(ephemeral=True, thinking=True)
+
     channel = await client.fetch_channel(1047644766877270038)
     a = {}
     for message in channel.history:
         dt = message.created_at
         date = (dt.year, dt.month, dt.day)
-        a[message.author.name].add(date)
-    await interaction.response.defer(ephemeral=True, thinking=True)
-    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+        a[message.author.id].add(date)
+
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
-                user = await client.fetch_user(row[0])
                 #print(user)
                 await db.execute(f"""UPDATE fartstreak 
                                     SET 
-                                        total = {len(a[user.name])}
+                                        total = {len(a[row[0]])}
                                     WHERE
                                         userid = {row[0]};""")
                 await db.commit()
