@@ -117,11 +117,12 @@ async def total_update_db(interaction):
 
     channel = await client.fetch_channel(1047644766877270038)
     a = {}
-    async for message in channel.history():
+    print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
+    async for message in channel.history(limit = None):
         dt = message.created_at
         date = (dt.year, dt.month, dt.day)
-        print(message.author.id)
-        print(a.keys())
+        #print(message.author.id)
+        #print(a.keys())
         try:
             a[message.author.id].add(date)
         except:
