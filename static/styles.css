@@ -1,19 +1,18 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap');
-html, body {
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap");
+html,
+body {
   background: #3c302c;
   color: whitesmoke;
 }
 body {
-  font-family: 'Nunito Sans', sans-serif;
+  font-family: "Nunito Sans", sans-serif;
   display: flex;
   justify-content: center;
-  
 }
 #external {
   display: flex;
   flex-direction: column;
   padding: 1rem;
-
 }
 #container {
   position: relative;
@@ -38,13 +37,13 @@ body {
   background: transparent;
   width: 10rem;
 }
-#container > div:nth-last-child(4) {
+#container > div:nth-last-child(5) {
   font-weight: bold;
   background: #815546;
-  text-align:center;
+  text-align: center;
 }
 /* pfp */
-#container > div:nth-last-child(2) {
+#container > div:nth-last-child(3) {
   border-radius: 10rem;
   background-size: contain;
   background-image: var(--link);
@@ -53,17 +52,25 @@ body {
   width: 2rem;
   height: 2rem;
   top: -0.25rem;
-  
+
   color: transparent;
   user-select: none;
 }
 
-#container > div:nth-last-child(3), #container > div:nth-last-child(4) {
+#container > div:nth-last-child(4),
+#container > div:nth-last-child(5) {
   width: 2rem;
 }
 
-h1 { 
-  text-align:center;
+#container > div:nth-last-child(6),
+#container > div:nth-last-child(7),
+#container > div:nth-last-child(8),
+#container > div:nth-last-child(9) {
+  display: hidden;
+}
+
+h1 {
+  text-align: center;
   color: #b2b16d;
   font-family: serif;
   font-weight: bold;
