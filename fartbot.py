@@ -120,15 +120,20 @@ async def total_update_db(interaction):
     async for message in channel.history():
         dt = message.created_at
         date = (dt.year, dt.month, dt.day)
+        print(message.author.id)
+        print(a.keys())
         try:
             a[message.author.id].add(date)
         except:
             a[message.author.id] = {date}
+    print("printing final vlaue of A:")
     print(a)
     async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
+                print(row[0])
+                print(a.keys())
                 print(a[row[0]])
                 await db.execute(f"""UPDATE fartstreak 
                                     SET 
