@@ -17,6 +17,7 @@ body {
 #container {
   position: relative;
   display: flex;
+  padding-left: 10rem;
   flex-direction: row-reverse;
   justify-content: start;
 }
@@ -32,9 +33,12 @@ body {
 }
 
 /* name */
-#container > div:last-child {
+#container > div:last-child(2) {
   font-weight: bold;
   background: transparent;
+  position: absolute;
+  left: -10rem;
+  top: -0.25rem;
   width: 10rem;
 }
 #container > div:nth-last-child(5) {
@@ -48,7 +52,7 @@ body {
   background-size: contain;
   background-image: var(--link);
   position: absolute;
-  left: -3rem;
+  left: -14rem;
   width: 2rem;
   height: 2rem;
   top: -0.25rem;
@@ -58,7 +62,8 @@ body {
 }
 
 #container > div:nth-last-child(4),
-#container > div:nth-last-child(5) {
+#container > div:nth-last-child(5),
+div:last-child {
   width: 2rem;
 }
 
@@ -66,7 +71,7 @@ body {
 #container > div:nth-last-child(7),
 #container > div:nth-last-child(8),
 #container > div:nth-last-child(9) {
-  display: hidden;
+  display: none !important;
 }
 
 h1 {
