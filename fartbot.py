@@ -32,6 +32,7 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
+            print(message.content)
             if(not re.fullmatch(message.content, '^fart club$')):
                 await message.delete()
             else:
@@ -69,7 +70,7 @@ class MyClient(discord.Client):
                                         userid = {message.author.id};""")
                                     await db.commit()
                                     #print("updated only the current streak")
-                            else: 
+                            else:
                                 if(row[4] != str(today)):
                                     await db.execute(f"""UPDATE fartstreak 
                                     SET currentstreak_end_date = '{today}',
