@@ -32,7 +32,7 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
-            if(not re.fullmatch(message.content, 'fart club')):
+            if(not re.fullmatch(message.content, '^fart club$')):
                 await message.delete()
             else:
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
@@ -117,7 +117,7 @@ async def total_update_db(interaction):
 
     channel = await client.fetch_channel(1047644766877270038)
     a = {}
-    print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
+    #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
     async for message in channel.history(limit = None):
         dt = message.created_at
         date = (dt.year, dt.month, dt.day)
