@@ -33,7 +33,7 @@ class MyClient(discord.Client):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
             print(message.content)
-            if(message.content != "fart club" or message.embeds != []):
+            if(message.content != "fart club" or message.stickers != []):
                 await message.delete()
             else:
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
