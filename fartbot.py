@@ -33,7 +33,7 @@ class MyClient(discord.Client):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
             print(message.content)
-            if((message.role.id==1097972642742550549 and message.content == "poo clan")or message.content == "fart club"):
+            if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
                 return
             if(message.content != "fart club" or message.stickers != []):
                 await message.delete()
