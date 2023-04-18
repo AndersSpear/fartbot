@@ -35,7 +35,7 @@ class MyClient(discord.Client):
             print(message.content)
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
                 return
-            if(message.content != "fart club" or message.stickers != []):
+            if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
