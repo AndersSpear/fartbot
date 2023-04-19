@@ -34,16 +34,17 @@ class MyClient(discord.Client):
         if(message.channel.id == 1047644766877270038):
             print(message.content)
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
+                message.add_reaction(👎)
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
+                message.add_reaction(<yeah:1098047870579515422>)
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
                         row = await cursor.fetchone()
                         today = date.today()
                         if(row == None):
-                            
                             await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name, total) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.display_avatar.url}', '{message.author.name}', 1);")
                             await db.commit()
                         else:
