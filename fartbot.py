@@ -40,7 +40,8 @@ class MyClient(discord.Client):
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
-                await message.add_reaction(1098047870579515422)
+                emojiFartClub = await client.fetch_emoji(1095128289187725382)
+                await message.add_reaction(emojiFartClub)
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
                         row = await cursor.fetchone()
