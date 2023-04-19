@@ -34,7 +34,7 @@ class MyClient(discord.Client):
         if(message.channel.id == 1047644766877270038):
             print(message.content)
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
-                emoji = client.get_emoji(1097984026297516034)
+                emojiThumbsDown = client.get_emoji(1F44E)
                 await message.add_reaction(emoji)
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
