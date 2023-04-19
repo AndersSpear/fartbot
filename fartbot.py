@@ -34,7 +34,7 @@ class MyClient(discord.Client):
         if(message.channel.id == 1047644766877270038):
             print(message.content)
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
-                message.add_reaction(👎)
+                message.add_reaction(<thumbsdown:1097984026297516034>)
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
