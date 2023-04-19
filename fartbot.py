@@ -34,12 +34,12 @@ class MyClient(discord.Client):
         if(message.channel.id == 1047644766877270038):
             print(message.content)
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
-                message.add_reaction(<thumbsdown:1097984026297516034>)
+                await message.add_reaction(1097984026297516034)
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
-                message.add_reaction(<yeah:1098047870579515422>)
+                await message.add_reaction(1098047870579515422)
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
                         row = await cursor.fetchone()
