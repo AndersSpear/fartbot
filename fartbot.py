@@ -34,7 +34,8 @@ class MyClient(discord.Client):
         if(message.channel.id == 1047644766877270038):
             print(message.content)
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
-                await message.add_reaction(1097984026297516034)
+                emoji = await client.fetch_emoji(1097984026297516034)
+                await message.add_reaction(emoji)
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
