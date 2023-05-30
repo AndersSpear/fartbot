@@ -32,18 +32,23 @@ class MyClient(discord.Client):
     async def on_message(self, message):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
+            print(message.author),
             print(message.content)
+            
             if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
+                emojiThumbsDown = client.get_emoji(1F44E)
+                await message.add_reaction(emoji)
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
+                emojiFartClub = client.get_emoji(1095128289187725382)
+                await message.add_reaction(emojiFartClub)
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
                         row = await cursor.fetchone()
                         today = date.today()
                         if(row == None):
-                            
                             await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name, total) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.display_avatar.url}', '{message.author.name}', 1);")
                             await db.commit()
                         else:
@@ -146,6 +151,51 @@ async def total_update_db(interaction):
                                     WHERE
                                         userid = {row[0]};""")
                     await db.commit()
+                except:
+                    print("broke but idk why")
+    await interaction.followup.send(content='done', ephemeral = True)
+
+
+@tree.command(name = "reset_all", description = "gets total number of days participated and updates", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+async def total_update_db(interaction):
+    await interaction.response.defer(ephemeral=True, thinking=True)
+
+    channel = await client.fetch_channel(1047644766877270038)
+    a = {}
+    #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
+    async for message in channel.history(limit = None):
+        dt = message.created_at
+        date = dt.date()
+        #print(message.author.id)
+        #print(a.keys())
+        try:
+            a[message.author.id].add(date)
+        except:
+            a[message.author.id] = {date}
+    print("printing final vlaue of A:")
+    print(a)
+
+    #now need to check for sequential dates
+
+    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+        async with db.execute('SELECT * FROM fartstreak') as cursor:
+            rows = await cursor.fetchall()
+            for row in rows:
+                try:
+                    todays = date.today()
+                    print(a[row[0]])
+                    
+                    print(todays == a[row[0]][0])
+                    #print(row[0])
+                    #print(a.keys())
+                    #print(a[row[0]])
+                    
+                    # await db.execute(f"""UPDATE fartstreak 
+                    #                 SET 
+                    #                     total = {len(a[row[0]])}
+                    #                 WHERE
+                    #                     userid = {row[0]};""")
+                    # await db.commit()
                 except:
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
