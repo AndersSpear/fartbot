@@ -152,7 +152,7 @@ async def total_update_db(interaction):
     await interaction.followup.send(content='done', ephemeral = True)
 
 
-@tree.command(name = "reset_all", description = "gets total number of days participated and updates", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+@tree.command(name = "reset_all", description = "for now it fixes the current streak", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def total_update_db(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
@@ -191,12 +191,12 @@ async def total_update_db(interaction):
                     #print(a.keys())
                     #print(a[row[0]])
                     
-                    # await db.execute(f"""UPDATE fartstreak 
-                    #                 SET 
-                    #                     total = {len(a[row[0]])}
-                    #                 WHERE
-                    #                     userid = {row[0]};""")
-                    # await db.commit()
+                    await db.execute(f"""UPDATE fartstreak 
+                                    SET 
+                                        currentstreak_length = {number_consecutive}
+                                    WHERE
+                                        userid = {row[0]};""")
+                    await db.commit()
                 except:
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
