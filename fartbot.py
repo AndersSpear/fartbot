@@ -35,7 +35,7 @@ class MyClient(discord.Client):
             print(message.author),
             print(message.content)
             
-            if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
+            if(message.author.get_role(1097972642742550549) != None and message.content == "poo clan"):
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
@@ -181,7 +181,7 @@ async def total_update_db(interaction):
                     todays = date.today()
                     print(a[row[0]])
                     
-                    print(todays == a[row[0]][0])
+                    print(todays in a[row[0]])
                     #print(row[0])
                     #print(a.keys())
                     #print(a[row[0]])
