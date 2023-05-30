@@ -155,4 +155,49 @@ async def total_update_db(interaction):
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
 
+
+@tree.command(name = "reset_all", description = "gets total number of days participated and updates", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+async def total_update_db(interaction):
+    await interaction.response.defer(ephemeral=True, thinking=True)
+
+    channel = await client.fetch_channel(1047644766877270038)
+    a = {}
+    #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
+    async for message in channel.history(limit = None):
+        dt = message.created_at
+        date = dt.date()
+        #print(message.author.id)
+        #print(a.keys())
+        try:
+            a[message.author.id].add(date)
+        except:
+            a[message.author.id] = {date}
+    print("printing final vlaue of A:")
+    print(a)
+
+    #now need to check for sequential dates
+
+    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+        async with db.execute('SELECT * FROM fartstreak') as cursor:
+            rows = await cursor.fetchall()
+            for row in rows:
+                try:
+                    todays = date.today()
+                    print(a[row[0]])
+                    
+                    print(todays == a[row[0]][0])
+                    #print(row[0])
+                    #print(a.keys())
+                    #print(a[row[0]])
+                    
+                    # await db.execute(f"""UPDATE fartstreak 
+                    #                 SET 
+                    #                     total = {len(a[row[0]])}
+                    #                 WHERE
+                    #                     userid = {row[0]};""")
+                    # await db.commit()
+                except:
+                    print("broke but idk why")
+    await interaction.followup.send(content='done', ephemeral = True)
+
 client.run(authTOKEN)
