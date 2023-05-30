@@ -186,6 +186,21 @@ async def total_update_db(interaction):
                         number_consecutive += 1
                         current_date -= timedelta(days = 1)
                         print(current_date)
+
+
+                    #now calculate longest
+                    current_date = date.fromisoformat('2023-01-01')
+                    longest_consecutive = 0
+                    current_consecutive = 0
+                    while(current_date <= date.today()):
+                        if(current_date in a[row[0]]):
+                            current_consecutive += 1
+                        else:
+                            longest_consecutive = max(longest_consecutive, current_consecutive)
+                            current_consecutive = 0
+                        current_date += timedelta(days = 1)
+                    print(row[0], longest_consecutive)
+                    
                     print(row[0], number_consecutive)
                     #print(row[0])
                     #print(a.keys())
