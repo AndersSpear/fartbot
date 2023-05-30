@@ -178,10 +178,15 @@ async def total_update_db(interaction):
             rows = await cursor.fetchall()
             for row in rows:
                 try:
-                    todays = date.today()
+                    number_consecutive = 0
+                    current_date = date.today()
                     print(a[row[0]])
-                    
-                    print(todays in a[row[0]])
+        
+                    while(current_date in a[row[0]]):
+                        number_consecutive += 1
+                        current_date -= timedelta(days = 1)
+                        print(current_date)
+                    print(row[0], number_consecutive)
                     #print(row[0])
                     #print(a.keys())
                     #print(a[row[0]])
