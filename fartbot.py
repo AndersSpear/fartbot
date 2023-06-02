@@ -199,6 +199,8 @@ async def total_update_db(interaction):
                             longest_consecutive = max(longest_consecutive, current_consecutive)
                             current_consecutive = 0
                         current_date += timedelta(days = 1)
+
+                    longest_consecutive = max(longest_consecutive, current_consecutive)
                     print(row[0], longest_consecutive)
                     
                     print(row[0], number_consecutive)
