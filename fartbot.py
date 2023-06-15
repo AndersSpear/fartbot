@@ -35,15 +35,11 @@ class MyClient(discord.Client):
             print(message.author),
             print(message.content)
             
-            if(message.author.get_role(1097972642742550549) != None and message.content== "poo clan"):
-                emojiThumbsDown = client.get_emoji(1F44E)
-                await message.add_reaction(emoji)
+            if(message.author.get_role(1097972642742550549) != None and message.content == "poo clan"):
                 return
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
-                emojiFartClub = client.get_emoji(1095128289187725382)
-                await message.add_reaction(emojiFartClub)
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
                         row = await cursor.fetchone()
@@ -156,7 +152,7 @@ async def total_update_db(interaction):
     await interaction.followup.send(content='done', ephemeral = True)
 
 
-@tree.command(name = "reset_all", description = "gets total number of days participated and updates", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+@tree.command(name = "reset_all", description = "for now it fixes the current streak", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
 async def total_update_db(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
@@ -182,20 +178,42 @@ async def total_update_db(interaction):
             rows = await cursor.fetchall()
             for row in rows:
                 try:
-                    todays = date.today()
+                    number_consecutive = 0
+                    current_date = date.today()
                     print(a[row[0]])
+        
+                    while(current_date in a[row[0]]):
+                        number_consecutive += 1
+                        current_date -= timedelta(days = 1)
+                        print(current_date)
+
+
+                    #now calculate longest
+                    current_date = date.fromisoformat('2023-01-01')
+                    longest_consecutive = 0
+                    current_consecutive = 0
+                    while(current_date <= date.today()):
+                        if(current_date in a[row[0]]):
+                            current_consecutive += 1
+                        else:
+                            longest_consecutive = max(longest_consecutive, current_consecutive)
+                            current_consecutive = 0
+                        current_date += timedelta(days = 1)
+
+                    longest_consecutive = max(longest_consecutive, current_consecutive)
+                    print(row[0], longest_consecutive)
                     
-                    print(todays == a[row[0]][0])
+                    print(row[0], number_consecutive)
                     #print(row[0])
                     #print(a.keys())
                     #print(a[row[0]])
                     
-                    # await db.execute(f"""UPDATE fartstreak 
-                    #                 SET 
-                    #                     total = {len(a[row[0]])}
-                    #                 WHERE
-                    #                     userid = {row[0]};""")
-                    # await db.commit()
+                    await db.execute(f"""UPDATE fartstreak 
+                                    SET 
+                                        currentstreak_length = {number_consecutive}
+                                    WHERE
+                                        userid = {row[0]};""")
+                    await db.commit()
                 except:
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
