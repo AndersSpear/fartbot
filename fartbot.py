@@ -1,6 +1,7 @@
 import discord
 import re
 import aiosqlite
+import aiocron
 from datetime import date
 from datetime import timedelta
 from authtoken import authTOKEN
@@ -30,6 +31,14 @@ class MyClient(discord.Client):
             #print("success")
         except:
             pass
+
+    @aiocron.crontab('0 0 * * *')
+    async def rm_roles():
+        guild = client.get_guild(1047644766311043162)
+        role = get(guild.roles, id=0) #0 is a placeholder
+        for member in guild.members:
+            await member.remove_roles(role)
+    
     async def on_message(self, message):
         #print(f'Message from {message.author}: {message.content}')
         if(message.channel.id == 1047644766877270038):
