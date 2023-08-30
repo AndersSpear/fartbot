@@ -5,6 +5,7 @@ from datetime import date
 from datetime import timedelta
 from authtoken import authTOKEN
 from discord import app_commands
+from discord.utils import get
 
 class MyClient(discord.Client):
     #db = None
@@ -40,6 +41,9 @@ class MyClient(discord.Client):
             if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
                 await message.delete()
             else:
+                #add role for general chat. the 0 is a placeholder, replace with the ID of the correct role
+                await message.author.add_roles(get(message.author.guild.roles, id=0))
+
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
                         row = await cursor.fetchone()
