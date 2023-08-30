@@ -17,9 +17,6 @@ for row in rows:
      if(row[4] != str(today) and row[4] != str(today - timedelta(days = 1))):
           print('reset')
           
-          #remove role for general chat. the 0 is a placeholder, replace with the ID of the correct role
-          await message.author.remove_roles(get(message.author.guild.roles, id=0))
-                
           cur.execute(f"""UPDATE fartstreak 
           SET currentstreak_length = 0
           WHERE
