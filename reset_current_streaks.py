@@ -15,9 +15,10 @@ for row in rows:
      print(str(today - timedelta(days = 1)))
      print(str(today - timedelta(days = 2)))
      if(row[4] != str(today) and row[4] != str(today - timedelta(days = 1))):
-         print('reset')
-         cur.execute(f"""UPDATE fartstreak 
-         SET currentstreak_length = 0
-         WHERE
-             userid = {row[0]};""")
-         connection.commit()
+          print('reset')
+          
+          cur.execute(f"""UPDATE fartstreak 
+          SET currentstreak_length = 0
+          WHERE
+               userid = {row[0]};""")
+          connection.commit()
