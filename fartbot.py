@@ -101,7 +101,7 @@ class MyClient(discord.Client):
     
                 #print('allowed')
 
-asyncio.get_event_loop().run_forever()
+
 
 intents = discord.Intents.default()
 intents.message_content = True
