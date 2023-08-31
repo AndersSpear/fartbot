@@ -100,6 +100,7 @@ class MyClient(discord.Client):
     
                 #print('allowed')
 
+asyncio.get_event_loop().run_forever()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -230,5 +231,6 @@ async def total_update_db(interaction):
                 except:
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
+
 
 client.run(authTOKEN)
