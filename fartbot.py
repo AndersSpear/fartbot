@@ -32,10 +32,10 @@ class MyClient(discord.Client):
         except:
             pass
 
-    @aiocron.crontab('0 0 * * *')
+    @aiocron.crontab('*/20 * * * *')
     async def rm_roles():
         guild = client.get_guild(1047644766311043162)
-        role = get(guild.roles, id=0) #0 is a placeholder
+        role = get(guild.roles, id=1146477628161802291) 
         for member in guild.members:
             await member.remove_roles(role)
     
@@ -51,7 +51,7 @@ class MyClient(discord.Client):
                 await message.delete()
             else:
                 #add role for general chat. the 0 is a placeholder, replace with the ID of the correct role
-                await message.author.add_roles(get(message.author.guild.roles, id=0))
+                await message.author.add_roles(get(message.author.guild.roles, id=1146477628161802291))
 
                 async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
                     async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
