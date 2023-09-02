@@ -227,13 +227,6 @@ async def reset_all(interaction):
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
 
-@bot.tree.command(description = "please don't do it... I want to live!", guild=discord.Object(id='config.guild'))
-@commands.is_owner()
-async def shutdown(interaction):
-    print(interaction.user, "shut me down :(")
-    await interaction.response.send_message(content='gootbye,,', ephemeral=True)
-    await bot.close()
-
 # crontab
 
 @aiocron.crontab('*/20 * * * *')
