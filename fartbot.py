@@ -45,8 +45,8 @@ async def on_raw_message_edit(payload):
 async def on_message(message):
     #print(f'Message from {message.author}: {message.content}')
     if(message.channel.id == config.channel):
-        print(message.author),
-        print(message.content)
+        #print(message.author),
+        #print(message.content)
         
         if(message.author.get_role(config.poo_clan) != None and message.content == "poo clan"):
             return
@@ -109,7 +109,7 @@ async def update(interaction):
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
-                user = await client.fetch_user(row[0])
+                user = await bot.fetch_user(row[0])
                 #print(user)
                 await db.execute(f"""UPDATE fartstreak 
                                     SET pfp = '{user.display_avatar.url}',
@@ -127,7 +127,7 @@ async def update(interaction):
 async def totalupdate(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
-    channel = await client.fetch_channel(config.channel)
+    channel = await bot.fetch_channel(config.channel)
     a = {}
     #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
     async for message in channel.history(limit = None):
@@ -165,7 +165,7 @@ async def totalupdate(interaction):
 async def reset_all(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
-    channel = await client.fetch_channel(config.channel)
+    channel = await bot.fetch_channel(config.channel)
     a = {}
     #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
     async for message in channel.history(limit = None):
@@ -229,6 +229,8 @@ async def reset_all(interaction):
 
 # crontab
 
+@bot.tree.command(description = "remove fart club role from all", guild=discord.Object(id=config.guild))
+@commands.is_owner()
 @aiocron.crontab('*/20 * * * *')
 async def rm_roles():
     guild = bot.get_guild(config.guild)
