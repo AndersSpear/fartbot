@@ -1,11 +1,12 @@
 from flask import Flask, render_template
 import sqlite3
+from config import dbpath
 
 app = Flask(__name__)
 
 @app.route("/")
 def main():
-    cur = sqlite3.connect("/home/pi/projects/fartbot/fartstreak.db").cursor()
+    cur = sqlite3.connect(dbpath).cursor()
     res = cur.execute('SELECT * FROM fartstreak').fetchall()
     rend = sorted(res, key=lambda x: x[5])
     out = rend[::-1]
