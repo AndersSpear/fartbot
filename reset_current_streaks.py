@@ -1,8 +1,9 @@
 import sqlite3
 from datetime import date
 from datetime import timedelta
+from config import dbpath
 
-connection = sqlite3.connect("/home/pi/projects/fartbot/fartstreak.db")
+connection = sqlite3.connect(dbpath)
 cur = connection.cursor()
 rows = cur.execute('SELECT * FROM fartstreak').fetchall()
 
