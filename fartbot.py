@@ -1,8 +1,5 @@
 import discord
-import re
 import aiosqlite
-import aiocron
-import asyncio
 import config
 from datetime import date
 from datetime import timedelta
@@ -123,7 +120,6 @@ async def update(interaction):
 
 
 @bot.tree.command(description = "gets total number of days participated and updates", guild=discord.Object(id=config.guild)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-@commands.is_owner()
 async def totalupdate(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
@@ -161,7 +157,6 @@ async def totalupdate(interaction):
 
 
 @bot.tree.command(description = "for now it fixes the current streak", guild=discord.Object(id=config.guild)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-@commands.is_owner()
 async def reset_all(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
@@ -230,8 +225,6 @@ async def reset_all(interaction):
 # crontab
 
 @bot.tree.command(description = "remove fart club role from all", guild=discord.Object(id=config.guild))
-@commands.is_owner()
-@aiocron.crontab('*/20 * * * *')
 async def rm_roles():
     guild = bot.get_guild(config.guild)
     role = get(guild.roles, id=config.general) 
