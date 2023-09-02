@@ -225,10 +225,12 @@ async def reset_all(interaction):
 # crontab
 
 @bot.tree.command(description = "remove fart club role from all", guild=discord.Object(id=config.guild))
-async def rm_roles():
+async def rm_roles(interaction):
+    await interaction.response.defer(ephemeral=True, thinking=True)
     guild = bot.get_guild(config.guild)
     role = get(guild.roles, id=config.general) 
     for member in guild.members:
         await member.remove_roles(role)
+    await interaction.followup.send(content='done', ephemeral = True)
 
 bot.run(config.token)
