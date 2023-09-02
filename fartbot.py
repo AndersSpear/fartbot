@@ -3,117 +3,109 @@ import re
 import aiosqlite
 import aiocron
 import asyncio
+import config
 from datetime import date
 from datetime import timedelta
-from authtoken import authTOKEN
-from discord import app_commands
+from discord.ext import commands
 from discord.utils import get
-
-class MyClient(discord.Client):
-    #db = None
-    
-    async def on_ready(self):
-        #db = await aiosqlite.connect("fartstreak.db")
-        print(f'Logged on as {self.user}!')
-        await tree.sync(guild=discord.Object(id=1047644766311043162))
-
-    async def on_member_join(self, member):
-        #print(f'{member} has joined the server')
-        await member.edit(nick = 'fart club')
-
-    async def on_raw_message_edit(self, payload):
-        #print("EDIT!!!")
-        try:
-            channel = await client.fetch_channel(1047644766877270038)
-            #print(channel)
-            message = await channel.fetch_message(payload.message_id)
-            #print(message)
-            await message.delete()
-            #print("success")
-        except:
-            pass
-
-    @aiocron.crontab('*/20 * * * *')
-    async def rm_roles():
-        guild = client.get_guild(1047644766311043162)
-        role = get(guild.roles, id=1146477628161802291) 
-        for member in guild.members:
-            await member.remove_roles(role)
-    
-    async def on_message(self, message):
-        #print(f'Message from {message.author}: {message.content}')
-        if(message.channel.id == 1047644766877270038):
-            print(message.author),
-            print(message.content)
-            
-            if(message.author.get_role(1097972642742550549) != None and message.content == "poo clan"):
-                return
-            if(message.content != "fart club" or message.stickers != [] or message.author.get_role(1097972642742550549) != None):
-                await message.delete()
-            else:
-                #add role for general chat. the 0 is a placeholder, replace with the ID of the correct role
-                await message.author.add_roles(get(message.author.guild.roles, id=1146477628161802291))
-
-                async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
-                    async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
-                        row = await cursor.fetchone()
-                        today = date.today()
-                        if(row == None):
-                            await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name, total) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.display_avatar.url}', '{message.author.name}', 1);")
-                            await db.commit()
-                        else:
-                            #print(f'row: {row}')
-                            #print(f"streak end: {row[4]}\nyesterday date: {today - timedelta(days = 1)}")
-                            if(row[4] == str(today - timedelta(days = 1))):
-                                #print('last message was yesterday')
-                                if (row[6] + 1 > row[5]):
-                                    await db.execute(f"""UPDATE fartstreak 
-                                    SET longeststreak_start_date = '{row[3]}',
-                                        longeststreak_end_date = '{today}',
-                                        longeststreak_length = {row[6] + 1},
-                                        currentstreak_end_date = '{today}',
-                                        currentstreak_length = {row[6] + 1},
-                                        total = {row[9] + 1}
-                                    WHERE
-                                        userid = {message.author.id};""")
-                                    await db.commit()
-                                    #print("updated longest streak")
-                                else:
-                                    await db.execute(f"""UPDATE fartstreak 
-                                    SET currentstreak_end_date = '{today}',
-                                        currentstreak_length = {row[6] + 1},
-                                        total = {row[9] + 1}
-                                    WHERE
-                                        userid = {message.author.id};""")
-                                    await db.commit()
-                                    #print("updated only the current streak")
-                            else:
-                                if(row[4] != str(today)):
-                                    await db.execute(f"""UPDATE fartstreak 
-                                    SET currentstreak_end_date = '{today}',
-                                        currentstreak_start_date = '{today}',
-                                        currentstreak_length = 1,
-                                        total = {row[9] + 1}
-                                    WHERE
-                                        userid = {message.author.id};""")
-                                    await db.commit()
-                                    #print("reset the current streak")
-    
-                #print('allowed')
-
-
 
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-client = MyClient(intents=intents)
-tree = app_commands.CommandTree(client)
+bot = commands.Bot(command_prefix='/', intents=intents)
 
-@tree.command(name = "update", description = "adds pfp links and names to db", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-async def update_db(interaction):
+##### Events #####
+
+@bot.event
+async def on_ready():
+        #db = await aiosqlite.connect("fartstreak.db")
+        print(f'Logged on as {bot.user}!')
+        await bot.tree.sync(guild=discord.Object(id=config.guild))
+
+@bot.event
+async def on_member_join(member):
+    #print(f'{member} has joined the server')
+    await member.edit(nick = 'fart club')
+
+@bot.event
+async def on_raw_message_edit(payload):
+    #print("EDIT!!!")
+    try:
+        channel = await client.fetch_channel(config.channel)
+        #print(channel)
+        message = await channel.fetch_message(payload.message_id)
+        #print(message)
+        await message.delete()
+        #print("success")
+    except:
+        pass
+
+@bot.event
+async def on_message(message):
+    #print(f'Message from {message.author}: {message.content}')
+    if(message.channel.id == config.channel):
+        print(message.author),
+        print(message.content)
+        
+        if(message.author.get_role(config.poo_clan) != None and message.content == "poo clan"):
+            return
+        if(message.content != "fart club" or message.stickers != [] or message.author.get_role(config.poo_clan) != None):
+            await message.delete()
+        else:
+            #add role for general chat. the 0 is a placeholder, replace with the ID of the correct role
+            await message.author.add_roles(get(message.author.guild.roles, id=config.general))
+
+            async with aiosqlite.connect(config.dbpath) as db:
+                async with db.execute(f'SELECT * FROM fartstreak WHERE userid = {message.author.id};') as cursor:
+                    row = await cursor.fetchone()
+                    today = date.today()
+                    if(row == None):
+                        await db.execute(f"INSERT INTO fartstreak (userid, longeststreak_start_date, longeststreak_end_date, longeststreak_length, currentstreak_start_date, currentstreak_end_date, currentstreak_length, pfp, name, total) VALUES ({message.author.id}, '{today}', '{today}', 1, '{today}', '{today}', 1, '{message.author.display_avatar.url}', '{message.author.name}', 1);")
+                        await db.commit()
+                    else:
+                        #print(f'row: {row}')
+                        #print(f"streak end: {row[4]}\nyesterday date: {today - timedelta(days = 1)}")
+                        if(row[4] == str(today - timedelta(days = 1))):
+                            #print('last message was yesterday')
+                            if (row[6] + 1 > row[5]):
+                                await db.execute(f"""UPDATE fartstreak 
+                                SET longeststreak_start_date = '{row[3]}',
+                                    longeststreak_end_date = '{today}',
+                                    longeststreak_length = {row[6] + 1},
+                                    currentstreak_end_date = '{today}',
+                                    currentstreak_length = {row[6] + 1},
+                                    total = {row[9] + 1}
+                                WHERE
+                                    userid = {message.author.id};""")
+                                await db.commit()
+                                #print("updated longest streak")
+                            else:
+                                await db.execute(f"""UPDATE fartstreak 
+                                SET currentstreak_end_date = '{today}',
+                                    currentstreak_length = {row[6] + 1},
+                                    total = {row[9] + 1}
+                                WHERE
+                                    userid = {message.author.id};""")
+                                await db.commit()
+                                #print("updated only the current streak")
+                        else:
+                            if(row[4] != str(today)):
+                                await db.execute(f"""UPDATE fartstreak 
+                                SET currentstreak_end_date = '{today}',
+                                    currentstreak_start_date = '{today}',
+                                    currentstreak_length = 1,
+                                    total = {row[9] + 1}
+                                WHERE
+                                    userid = {message.author.id};""")
+                                await db.commit()
+
+##### Commands #####
+
+@bot.tree.command(description = "adds pfp links and names to db", guild=discord.Object(id=config.guild)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+async def update(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
-    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+    async with aiosqlite.connect(config.dbpath) as db:
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
@@ -130,11 +122,12 @@ async def update_db(interaction):
     
 
 
-@tree.command(name = "totalupdate", description = "gets total number of days participated and updates", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-async def total_update_db(interaction):
+@bot.tree.command(description = "gets total number of days participated and updates", guild=discord.Object(id=config.guild)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+@commands.is_owner()
+async def totalupdate(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
-    channel = await client.fetch_channel(1047644766877270038)
+    channel = await client.fetch_channel(config.channel)
     a = {}
     #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
     async for message in channel.history(limit = None):
@@ -148,7 +141,7 @@ async def total_update_db(interaction):
             a[message.author.id] = {date}
     print("printing final vlaue of A:")
     print(a)
-    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+    async with aiosqlite.connect(config.dbpath) as db:
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
@@ -167,11 +160,12 @@ async def total_update_db(interaction):
     await interaction.followup.send(content='done', ephemeral = True)
 
 
-@tree.command(name = "reset_all", description = "for now it fixes the current streak", guild=discord.Object(id=1047644766311043162)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-async def total_update_db(interaction):
+@bot.tree.command(description = "for now it fixes the current streak", guild=discord.Object(id=config.guild)) #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+@commands.is_owner()
+async def reset_all(interaction):
     await interaction.response.defer(ephemeral=True, thinking=True)
 
-    channel = await client.fetch_channel(1047644766877270038)
+    channel = await client.fetch_channel(config.channel)
     a = {}
     #print( "total messages pulled: " + str(len([message async for message in channel.history(limit = None)])))
     async for message in channel.history(limit = None):
@@ -188,7 +182,7 @@ async def total_update_db(interaction):
 
     #now need to check for sequential dates
 
-    async with aiosqlite.connect("/home/pi/projects/fartbot/fartstreak.db") as db:
+    async with aiosqlite.connect(config.dbpath) as db:
         async with db.execute('SELECT * FROM fartstreak') as cursor:
             rows = await cursor.fetchall()
             for row in rows:
@@ -233,5 +227,20 @@ async def total_update_db(interaction):
                     print("broke but idk why")
     await interaction.followup.send(content='done', ephemeral = True)
 
+@bot.tree.command(description = "please don't do it... I want to live!", guild=discord.Object(id='config.guild'))
+@commands.is_owner()
+async def shutdown(interaction):
+    print(interaction.user, "shut me down :(")
+    await interaction.response.send_message(content='gootbye,,', ephemeral=True)
+    await bot.close()
 
-client.run(authTOKEN)
+# crontab
+
+@aiocron.crontab('*/20 * * * *')
+async def rm_roles():
+    guild = bot.get_guild(config.guild)
+    role = get(guild.roles, id=config.role) 
+    for member in guild.members:
+        await member.remove_roles(role)
+
+bot.run(config.token)
