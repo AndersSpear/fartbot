@@ -239,7 +239,7 @@ async def shutdown(interaction):
 @aiocron.crontab('*/20 * * * *')
 async def rm_roles():
     guild = bot.get_guild(config.guild)
-    role = get(guild.roles, id=config.role) 
+    role = get(guild.roles, id=config.general) 
     for member in guild.members:
         await member.remove_roles(role)
 
