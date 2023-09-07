@@ -236,4 +236,15 @@ async def rm_roles(interaction):
 
     await interaction.followup.send(content='done', ephemeral = True)
 
+@bot.tree.context_menu(description = "get user's fart data", guild=discord.Object(id=config.guild))
+async def get_data(interaction, member: discord.Member):
+    await interaction.response.defer(ephemeral=True)
+    async with aiosqlite.connect(config.dbpath) as db:
+        async with db.execute(f'SELECT total, currentstreak_length, longeststreak_length FROM fartstreak WHERE userid = {member.id};') as cursor:
+            row = await cursor.fetchone()
+            if(row == None):
+                await interaction.followup.send(f'hmmm... {member.name} isn\'t in the database')
+            else:
+                await interaction.followup.send(f'{member.name}:\n{row[0]} days participated\n{row[1]} day streak\n{row[2]} day longest streak')
+
 bot.run(config.token)
