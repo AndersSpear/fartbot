@@ -236,7 +236,7 @@ async def rm_roles(interaction):
 
     await interaction.followup.send(content='done', ephemeral = True)
 
-@bot.tree.context_menu(description = "get user's fart data", guild=discord.Object(id=config.guild))
+@bot.tree.context_menu( guild=discord.Object(id=config.guild))
 async def get_data(interaction, member: discord.Member):
     await interaction.response.defer(ephemeral=True)
     async with aiosqlite.connect(config.dbpath) as db:
