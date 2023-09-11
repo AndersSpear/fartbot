@@ -245,7 +245,8 @@ async def get_data(interaction, member: discord.Member):
             if(row == None):
                 await interaction.followup.send(f'hmmm... {member.name} isn\'t in the database')
             else:
-                async with db.execute(f'SELECT COUNT(*) FROM fartstreak WHERE longeststreak_length > {row[2]}').fetchone()[0] + 1 as place:
-                        await interaction.followup.send(f'{member.name} (#{place}):\n{row[0]} days participated\n{row[1]} day streak\n{row[2]} day longest streak')
+                async with db.execute(f'SELECT COUNT(*) FROM fartstreak WHERE longeststreak_length > {row[2]};') as cursor:
+                    place = await cursor.fetchone()
+                    await interaction.followup.send(f'{member.name} (#{place[0] + 1}):\n{row[0]} days participated\n{row[1]} day streak\n{row[2]} day longest streak')
 
 bot.run(config.token)
