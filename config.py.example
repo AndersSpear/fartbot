@@ -1,0 +1,8 @@
+# Actual config file has auth token in it (scary!) so it is in .gitignore
+# Here is what the config.py should look like
+guild = ''     guild id
+channel = ''   channel id where you can only say 'fart club'
+poo_clan = ''  role id of poo clan
+general = ''   role id to let people talk in general
+dbpath = ''   /path/to/your/sqlite/database.db
+token = ''    auth token
