@@ -9,6 +9,7 @@ from discord.utils import get
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.messages = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
@@ -30,11 +31,11 @@ async def on_raw_message_edit(payload):
     #print("EDIT!!!")
     try:
         channel = await client.fetch_channel(config.channel)
-        #print(channel)
+        print(channel)
         message = await channel.fetch_message(payload.message_id)
-        #print(message)
+        print(message)
         await message.delete()
-        #print("success")
+        print("success")
     except:
         pass
 
