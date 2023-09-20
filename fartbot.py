@@ -31,11 +31,11 @@ async def on_raw_message_edit(payload):
     #print("EDIT!!!")
     try:
         channel = await bot.fetch_channel(config.channel)
-        print(channel)
+        #print(channel)
         message = await channel.fetch_message(payload.message_id)
-        print(message)
+        #print(message)
         await message.delete()
-        print("success")
+        #print("success")
     except:
         pass
 
