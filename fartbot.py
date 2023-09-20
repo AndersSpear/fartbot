@@ -30,7 +30,7 @@ async def on_member_join(member):
 async def on_raw_message_edit(payload):
     #print("EDIT!!!")
     try:
-        channel = await client.fetch_channel(config.channel)
+        channel = await bot.fetch_channel(config.channel)
         print(channel)
         message = await channel.fetch_message(payload.message_id)
         print(message)
