@@ -4,6 +4,7 @@ import config
 from datetime import date
 from datetime import timedelta
 from discord.ext import commands
+from discord import app_commands
 from discord.utils import get
 
 intents = discord.Intents.default()
@@ -237,7 +238,21 @@ async def rm_roles(interaction):
 
     await interaction.followup.send(content='done', ephemeral = True)
 
-@bot.tree.context_menu( guild=discord.Object(id=config.guild))
+@bot.tree.command(description = "sanitize the last n messages in the fart club channel", guild=discord.Object(id=config.guild))
+@app_commands.default_permissions()
+async def sanitize(interaction, n: int):
+    await interaction.response.defer(ephemeral=True)
+
+    def not_fart_club(m):
+        return m.content != 'fart club'
+    
+    channel = bot.get_channel(config.channel)
+    await channel.purge(limit=n, check=not_fart_club, reason='fart club')
+
+    await interaction.followup.send(content='done')
+    
+
+@bot.tree.context_menu(guild=discord.Object(id=config.guild))
 async def get_data(interaction, member: discord.Member):
     await interaction.response.defer(ephemeral=True)
     async with aiosqlite.connect(config.dbpath) as db:
