@@ -9,6 +9,7 @@ from discord.utils import get
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+intents.messages = True
 
 bot = commands.Bot(command_prefix='/', intents=intents)
 
@@ -29,7 +30,7 @@ async def on_member_join(member):
 async def on_raw_message_edit(payload):
     #print("EDIT!!!")
     try:
-        channel = await client.fetch_channel(config.channel)
+        channel = await bot.fetch_channel(config.channel)
         #print(channel)
         message = await channel.fetch_message(payload.message_id)
         #print(message)
