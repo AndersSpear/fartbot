@@ -20,7 +20,7 @@ bot = commands.Bot(command_prefix='/', intents=intents)
 async def on_ready():
         #db = await aiosqlite.connect("fartstreak.db")
         async with aiosqlite.connect(config.dbpath) as db:
-            await db.execute("""CREATE TABLE [IF NOT EXISTS] fartstreak (
+            await db.execute("""CREATE TABLE IF NOT EXISTS fartstreak (
 	userid, INTEGER PRIMARY KEY,
    	longeststreak_start_date TEXT,
 	longeststreak_end_date TEXT,
@@ -31,7 +31,7 @@ async def on_ready():
     pfp TEXT,
     name TEXT,
     total INTEGER
-) [WITHOUT ROWID];""")
+) WITHOUT ROWID;""")
             await db.commit()
         
         print(f'Logged on as {bot.user}!')
