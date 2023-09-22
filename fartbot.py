@@ -43,6 +43,7 @@ async def on_raw_message_edit(payload):
 @bot.event
 async def on_message(message):
     print(f'Message from {message.author}: {message.content}')
+    print(f'channel id {message.channel.id} config: {config.channel}')
     if(message.channel.id == config.channel):
         #print(message.author),
         print(message.content)
