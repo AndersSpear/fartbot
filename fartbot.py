@@ -42,15 +42,17 @@ async def on_raw_message_edit(payload):
 
 @bot.event
 async def on_message(message):
-    #print(f'Message from {message.author}: {message.content}')
+    print(f'Message from {message.author}: {message.content}')
     if(message.channel.id == config.channel):
         #print(message.author),
-        #print(message.content)
+        print(message.content)
         if(type(message.author) != discord.Member):
             return
         if(message.author.get_role(config.poo_clan) != None and message.content == "poo clan"):
             return
+        print("before delete")
         if(message.content != "fart club" or message.stickers != [] or message.author.get_role(config.poo_clan) != None):
+            print("in deelete")
             await message.delete()
         else:
             #add role for general chat. the 0 is a placeholder, replace with the ID of the correct role
