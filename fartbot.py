@@ -44,7 +44,9 @@ async def on_raw_message_edit(payload):
 async def on_message(message):
     print(f'Message from {message.author}: {message.content}')
     print(message.channel.id)
+    print(type(message.channel.id))
     print(config.channel)
+    print(type(config.channel))
     if(message.channel.id == config.channel):
         #print(message.author),
         print(message.content)
