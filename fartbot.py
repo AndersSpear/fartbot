@@ -232,7 +232,7 @@ async def reset_all(interaction):
                     
                     await db.execute(f"""UPDATE fartstreak 
                                     SET 
-                                        currentstreak_length = {number_consecutive}
+                                        currentstreak_length = {number_consecutive},
 					longeststreak_length = {longest_consecutive}
                                     WHERE
                                         userid = {row[0]};""")
