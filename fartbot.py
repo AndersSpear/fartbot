@@ -1,8 +1,8 @@
 import discord
 import aiosqlite
 import config
-from datetime import date
-from datetime import timedelta
+import asyncio
+from datetime import date, datetime, timedelta
 from discord.ext import commands
 from discord import app_commands
 from discord.utils import get
@@ -19,6 +19,7 @@ bot = commands.Bot(command_prefix='/', intents=intents)
 @bot.event
 async def on_ready():
         #db = await aiosqlite.connect("fartstreak.db")
+        asyncio.create_task(reset_roles())
         async with aiosqlite.connect(config.dbpath) as db:
             await db.execute("""CREATE TABLE IF NOT EXISTS fartstreak (
 	userid, INTEGER PRIMARY KEY,
@@ -280,5 +281,15 @@ async def get_data(interaction, member: discord.Member):
                 async with db.execute(f'SELECT COUNT(*) FROM fartstreak WHERE longeststreak_length > {row[2]};') as cursor:
                     place = await cursor.fetchone()
                     await interaction.followup.send(f'{member.name} (#{place[0] + 1}):\n{row[0]} days participated\n{row[1]} day streak\n{row[2]} day longest streak')
+
+async def reset_roles():
+    role = bot.get_guild(config.guild).get_role(config.general)
+
+    while True:
+        now = datetime.now()
+        await asyncio.sleep(((now + timedelta(1)).replace(hour=0, minute=0, second=0) - now).total_seconds())
+
+        for member in role.members:
+            await member.remove_roles(role)
 
 bot.run(config.token)
